@@ -39,9 +39,9 @@ private:
 		Node* left;
 		Node* right;
 
-		T* data;
+		T data;
 
-		Node(T& data)
+		Node(T data)
 		{
 			//cout << "created node with data " << data.symbols << endl;
 			//data.symbols = "weewee";
@@ -49,11 +49,11 @@ private:
 			this->left = nullptr;
 			this->right = nullptr;
 			this->parent = nullptr;
-			this->data = &data;
+			this->data = data;
 		}
 	};
 
-	
+
 
 	void Heapify(Node* node)
 	{
@@ -61,17 +61,17 @@ private:
 		{
 			siftDown(node);
 		}
-		else 
-		if (node->data < node->parent->data)
-		{
-			cout << "PROC1" << endl;
-			siftUp(node);
-		}
 		else
-		{
-			cout << "PROC2" << endl;
-			siftDown(node);	
-		}
+			if (node->data < node->parent->data)
+			{
+				cout << "PROC1" << endl;
+				siftUp(node);
+			}
+			else
+			{
+				cout << "PROC2" << endl;
+				siftDown(node);
+			}
 	}
 
 	void siftDown(Node* node)
@@ -203,7 +203,7 @@ public:
 
 	void insert(T& data)
 	{
-		//data.symbols = "weeewee";
+		data.symbols = "weeewee";
 
 		//newNode->data.symbols = "weeewee";
 
@@ -217,7 +217,7 @@ public:
 			height = 1;
 			lastLineNodesCount = 1;
 
-			
+
 		}
 		else
 		{
@@ -251,7 +251,7 @@ public:
 				newNode->parent = parentNode;
 			}
 
-			
+
 
 			Heapify(newNode);
 
@@ -339,7 +339,7 @@ public:
 	{
 		return root->data;
 	}
-	
+
 	T pop()
 	{
 		T temp = getRoot();

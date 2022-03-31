@@ -52,46 +52,58 @@ inline string const BoolToString(bool b)
 }
 
 void EncodeByHaffman(Map<char, int> symbolsMap)
-{ 
-	//HaffmanNode* node = new HaffmanNode("ABCD", 100);
-	HaffmanNode node("ABCD", 100);
-
-	cout << &node << endl;
-
-	cout << "before: " << node.symbols << endl;
-
+{
 	BinaryHeap<HaffmanNode>* heap = new BinaryHeap<HaffmanNode>();
 
-	heap->insert(node);
+	//cout << &node << endl;
 
-	cout << "after: " << node.symbols << endl;
+	//cout << "before: " << node.symbols << endl;
 
-	//heap->root->data.symbols = "qeqoqeq";
+	
+	auto itr = symbolsMap.create_iterator();
+	while (itr->has_next())
+	{
+		Pair<char, int> newPair = itr->next();
+		HaffmanNode newNode(string(1, newPair.first), newPair.second);
+		heap->insert(newNode);
+		//bufferList->push_back(newNode);
+	}
+
+	cout << "Heap\n";
+	auto heapiter = heap->create_iterator();
+	while (heapiter->has_next())
+	{
+		HaffmanNode newNode = heapiter->next()->data;
+
+		cout << "Symbol: " << newNode.symbols << " Count: " << newNode.count << endl;
+	}
+
+	HaffmanNode newNode = heap->root->data;
+	newNode.symbols = "after";
+
+	cout << "\nafter: "<< endl;
+	cout << "Heap\n";
+	auto heapiter2 = heap->create_iterator();
+	while (heapiter2->has_next())
+	{
+		HaffmanNode newNode = heapiter2->next()->data;
+
+		cout << "Symbol: " << newNode.symbols << " Count: " << newNode.count << endl;
+	}
+	//cout << heap->root->data.symbols << endl;
+
+
 
 	//cout << node.symbols << endl;
 
 	//BinaryHeap<HaffmanNode>* heap = new BinaryHeap<HaffmanNode>();
 	//List<HaffmanNode*>* bufferList = new List<HaffmanNode*>();
 
-	//auto itr = symbolsMap.create_iterator();
-
-	//while (itr->has_next())
-	//{
-	//	Pair<char, int> newPair = itr->next();
-	//	HaffmanNode newNode(string(1, newPair.first), newPair.second);
-	//	heap->insert(newNode);
-	//	//bufferList->push_back(newNode);
-	//}
 	//
-	//cout << "Heap\n";
-	//auto heapiter = heap->create_iterator();
 
-	//while (heapiter->has_next())
-	//{
-	//	HaffmanNode newNode = heapiter->next()->data;
-
-	//	cout << "Symbol: " << newNode.symbols << " Count: " << newNode.count << endl;
-	//}
+	
+	//
+	
 
 	//while (heap->height != 1)
 	//{
@@ -154,4 +166,3 @@ void EncodeByHaffman(Map<char, int> symbolsMap)
 	//	cout << code << endl;
 	//}
 }
-
