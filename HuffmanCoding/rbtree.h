@@ -43,7 +43,7 @@ private:
 			right = nullptr;
 			parent = nullptr;
 			key = nullptr;
-			data = 0;
+			//data = 0;
 			color = color::RED;
 		}
 
@@ -58,6 +58,16 @@ private:
 
 	Node* Nil;
 public:
+	T2 operator [](T1& key)
+	{
+		return FindData(key);
+	}
+
+	T2& operator [](T1 const key)
+	{
+		return *((Node*)&FindNode(key))->data;
+	}
+
 	RBTree()
 	{
 		Nil = new Node();
@@ -205,6 +215,66 @@ public:
 		}
 	}
 
+	void Add(T1 key, T2 data)
+	{
+		if (root == Nil)
+		{
+			Node* newNode = new Node(key, data);
+
+
+
+			root = newNode;
+			root->color = color::BLACK;
+
+			newNode->left = Nil;
+			newNode->right = Nil;
+		}
+		else
+		{
+			Node* parentNode = ParentNodeToInsert(key);
+
+			if (parentNode == Nil)
+			{
+				/*if (root->key == key)
+				{
+					throw invalid_argument("Node does not exist.");
+				} */
+				root->data += data;
+				return;
+			}
+
+
+			if (parentNode->left != Nil && *parentNode->left->key == key)
+			{
+				parentNode->left->data += data;
+				return;
+
+			}
+			else if (parentNode->right != Nil && *parentNode->right->key == key)
+			{
+				parentNode->right->data += data;
+				return;
+			}
+
+			Node* newNode = new Node(key, data);
+
+			if (key < *parentNode->key)
+				parentNode->left = newNode;
+			else
+				parentNode->right = newNode;
+
+			newNode->parent = parentNode;
+			newNode->left = Nil;
+			newNode->right = Nil;
+
+			newNode->color = color::RED;
+
+			FixInsert(newNode);
+		}
+	}
+
+
+
 	void Insert(T1 key, T2 data)
 	{
 		if (root == Nil)
@@ -223,20 +293,16 @@ public:
 
 			if (parentNode == Nil)
 			{
-				root->data+= data;
-				return;
+				throw invalid_argument("Key already exists");
 			}
-
 
 			if (parentNode->left != Nil && *parentNode->left->key == key)
 			{
-				parentNode->left->data += data;
-				return;
+				throw invalid_argument("Key already exists");
 				
 			} else if (parentNode->right != Nil && *parentNode->right->key == key)
 			{
-				parentNode->right->data += data;
-				return;
+				throw invalid_argument("Key already exists");
 			}
 
 			Node* newNode = new Node(key, data);

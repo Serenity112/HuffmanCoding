@@ -21,6 +21,6 @@ public:
 
 
 
-void EncodeByHaffman(Map<char, int>);
+Map<char, List<bool>*	> EncodeByHaffman(Map<char, int>);
 
 #endif

@@ -14,12 +14,7 @@ public:
 		this->second = second;
 	}
 
-	Pair()
-	{
-		this->first = 0;
-		this->second = 0;
-	}
-
+	Pair() { }
 }; 
 
 template <typename T1, typename T2>
@@ -27,4 +22,4 @@ Pair<T1, T2> makepair(T1 first, T2 second)
 {
 	return Pair<T1, T2>(first, second);
 }
-#endif
+#endif	

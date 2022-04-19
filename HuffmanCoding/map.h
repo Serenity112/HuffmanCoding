@@ -7,12 +7,24 @@
 #include "list.h"
 #include "pair.h"
 
+
+
 template <class T1, class T2>
 class Map
 {
 private:
 	RBTree<T1, T2>* rbtree;
 public:
+
+	T2 operator [](T1& key)
+	{
+		return rbtree[key];
+	}
+
+	///*T2& operator [](T1 const key)
+	//{
+	//	return rbtree[key];
+	//}*/
 
 	Map()
 	{
@@ -22,6 +34,11 @@ public:
 	void Insert(T1 key, T2 data)
 	{
 		rbtree->Insert(key, data);
+	}
+
+	void Add(T1 key, T2 data)
+	{
+		rbtree->Add(key, data);
 	}
 
 	void Delete(T1 key)

@@ -38,6 +38,9 @@ public:
 	Node* last;
 
 public:
+
+	int size = 0;
+
 	Node* head;
 
 	List()
@@ -60,6 +63,8 @@ public:
 
 	void push_back(T elem)
 	{
+		size++;
+
 		Node* newElem = new Node(elem, nullptr, last);
 		if (isEmpty())
 		{
@@ -74,6 +79,8 @@ public:
 
 	void push_front(T elem)
 	{
+		size++;
+
 		Node* newElem = new Node(elem, head, nullptr);;
 		if (isEmpty())
 		{
@@ -94,10 +101,12 @@ public:
 		}
 		else if (head->next == nullptr)
 		{
+			size = 0;
 			pop_only();
 		}
 		else
 		{
+			size--;
 			Node* currNode = last->prev;
 			delete last;
 			last = currNode;
@@ -113,10 +122,12 @@ public:
 		}
 		else if (head->next == nullptr)
 		{
+			size = 0;
 			pop_only();
 		}
 		else
 		{
+			size--;
 			Node* currNode = head->next;
 			delete head;
 			head = currNode;
@@ -126,6 +137,7 @@ public:
 
 	void clear()
 	{
+		size = 0;
 		this->~List();
 		return;
 	}

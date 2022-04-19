@@ -5,23 +5,20 @@
 
 #include "iterator.h"
 #include "stack.h"
-#include "haffmanalgorithm.h"
+#include "huffmanalgorithm.h"
 
 bool operator < (const HaffmanNode& node1, const HaffmanNode& node2)
 {
-	//cout << "oper < returns " << node1.count << node2.count
 	return node1.count < node2.count;
 }
 
 bool operator > (const HaffmanNode& node1, const HaffmanNode& node2)
 {
-	//cout << "COMPARISON MADE\n";
 	return node1.count > node2.count;
 }
 
 bool operator == (const HaffmanNode& node1, const HaffmanNode& node2)
 {
-	//cout << "COMPARISON MADE\n";
 	return node1.count == node2.count;
 }
 
@@ -43,9 +40,6 @@ private:
 
 		Node(T data)
 		{
-			//cout << "created node with data " << data.symbols << endl;
-			//data.symbols = "weewee";
-
 			this->left = nullptr;
 			this->right = nullptr;
 			this->parent = nullptr;
@@ -64,12 +58,12 @@ private:
 		else
 			if (node->data < node->parent->data)
 			{
-				cout << "PROC1" << endl;
+				//cout << "PROC1" << endl;
 				siftUp(node);
 			}
 			else
 			{
-				cout << "PROC2" << endl;
+				//cout << "PROC2" << endl;
 				siftDown(node);
 			}
 	}
@@ -201,9 +195,9 @@ public:
 		return root == nullptr;
 	}
 
-	void insert(T& data)
+	void insert(T data)
 	{
-		data.symbols = "weeewee";
+		//data.symbols = "weeewee";
 
 		//newNode->data.symbols = "weeewee";
 

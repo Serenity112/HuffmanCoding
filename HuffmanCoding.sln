@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HuffmanCoding", "HuffmanCoding\HuffmanCoding.vcxproj", "{CE8A8E5D-A24F-44FE-8A8A-070DA582D910}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HuffmanCodingTest", "HuffmanCodingTest\HuffmanCodingTest.vcxproj", "{12CAD705-7CAB-4CA7-BB3A-0FF5FC40095F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{CE8A8E5D-A24F-44FE-8A8A-070DA582D910}.Release|x64.Build.0 = Release|x64
 		{CE8A8E5D-A24F-44FE-8A8A-070DA582D910}.Release|x86.ActiveCfg = Release|Win32
 		{CE8A8E5D-A24F-44FE-8A8A-070DA582D910}.Release|x86.Build.0 = Release|Win32
+		{12CAD705-7CAB-4CA7-BB3A-0FF5FC40095F}.Debug|x64.ActiveCfg = Debug|x64
+		{12CAD705-7CAB-4CA7-BB3A-0FF5FC40095F}.Debug|x64.Build.0 = Debug|x64
+		{12CAD705-7CAB-4CA7-BB3A-0FF5FC40095F}.Debug|x86.ActiveCfg = Debug|Win32
+		{12CAD705-7CAB-4CA7-BB3A-0FF5FC40095F}.Debug|x86.Build.0 = Debug|Win32
+		{12CAD705-7CAB-4CA7-BB3A-0FF5FC40095F}.Release|x64.ActiveCfg = Release|x64
+		{12CAD705-7CAB-4CA7-BB3A-0FF5FC40095F}.Release|x64.Build.0 = Release|x64
+		{12CAD705-7CAB-4CA7-BB3A-0FF5FC40095F}.Release|x86.ActiveCfg = Release|Win32
+		{12CAD705-7CAB-4CA7-BB3A-0FF5FC40095F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
