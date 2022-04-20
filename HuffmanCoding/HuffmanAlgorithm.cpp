@@ -28,25 +28,17 @@ HaffmanNode::HaffmanNode(string symbols, int count) : HaffmanNode()
 }
 
 
-Map<char, List<bool>*> EncodeByHaffman(Map<char, int> symbolsMap)
+Map<char, List<bool>*>* EncodeByHaffman(Map<char, int>* symbolsMap)
 {
 	BinaryHeap<HaffmanNode>* heap = new BinaryHeap<HaffmanNode>();
 
-	auto itr = symbolsMap.create_iterator();
+	auto itr = symbolsMap->create_iterator();
 	while (itr->has_next())
 	{
 		Pair<char, int> newPair = itr->next();
 		HaffmanNode newNode(string(1, newPair.first), newPair.second);
 		heap->insert(newNode);
 	}
-
-	/*cout << "BinaryHeap:" << endl;
-	auto heapitr = heap->create_iterator();
-	while (heapitr->has_next())
-	{
-		HaffmanNode node = heapitr->next()->data;
-		cout << node.symbols << " " << node.count << endl;
-	}*/
 
 	List<HaffmanNode*>* bufferList = new List<HaffmanNode*>();
 
@@ -85,10 +77,6 @@ Map<char, List<bool>*> EncodeByHaffman(Map<char, int> symbolsMap)
 
 		HaffmanNode* newNode = new HaffmanNode(combinedSymbols, combinedCount);
 
-		/*cout << "Making node " << newNode->symbols << " : " << newNode->count;
-		cout << " from nodes " << minNode1->symbols << " : " << minNode1->count;
-		cout << " and node " << minNode2->symbols << " : " << minNode2->count << endl;*/
-
 		minNode1->code = 0;
 		minNode2->code = 1;
 
@@ -104,7 +92,7 @@ Map<char, List<bool>*> EncodeByHaffman(Map<char, int> symbolsMap)
 
 	auto bufferItr = bufferList->create_iterator();
 
-	Map<char, List<bool>*> haffcode;
+	Map<char, List<bool>*>* haffcode = new Map<char, List<bool>*>();
 
 	while (bufferItr->has_next())
 	{
@@ -121,7 +109,7 @@ Map<char, List<bool>*> EncodeByHaffman(Map<char, int> symbolsMap)
 			current = current->parent;
 		}
 	
-		haffcode.Insert(currSymbol, symbolCode);
+		haffcode->Insert(currSymbol, symbolCode);
 	}
 
 	return haffcode;

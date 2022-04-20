@@ -18,45 +18,67 @@ namespace HuffmanCodingTest
 		{
 			return b ? "1" : "0";
 		}
+
 		TEST_METHOD(HaffmanCode1)
 		{
 			string quote3 = "this is where it all begins";
 			cout << quote3 << ":" << endl;
 
-			Map<char, int> symbolsMap3;
+			Map<char, int>* symbolsMap3 = new Map<char, int>();
 
 			for (char character : quote3)
 			{
-				symbolsMap3.Add(character, 1);
+				symbolsMap3->Add(character, 1);
 			}
 
-			Map<char, List<bool>*> haffmanCode3 = EncodeByHaffman(symbolsMap3);
+			Map<char, List<bool>*>* haffmanCode3 = EncodeByHaffman(symbolsMap3);
 
-			string encodedString;
-			
-
-			int encodedSize3 = 0;
-
-			auto map_itr3 = haffmanCode3.create_iterator();
-			auto sym_itr3 = symbolsMap3.create_iterator();
-
-			while (map_itr3->has_next())
+			string EncodedString = "";
+			cout << "Encoded string: " << endl;
+			for (char character : quote3)
 			{
-				Pair<char, List<bool>*> newPair = map_itr3->next();
-				auto list_itr = newPair.second->create_iterator();
-
-				int symFreq = sym_itr3->next().second;
-
-				cout << newPair.first << " ";
+				List<bool>* code = haffmanCode3->Find(character);
+				auto list_itr = code->create_iterator();
 				while (list_itr->has_next())
 				{
-					encodedSize3 += symFreq;
-					cout << list_itr->next();
+					EncodedString += BoolToString(list_itr->next());
 				}
-				cout << endl;
 			}
-			cout << "Size before encode: " << quote3.length() * sizeof(char) * 8 << " bits" << endl;
-			cout << "Size after encode: " << encodedSize3 << " bits" << endl;
+
+			string ExpectedCode = "1111100011001000110010001011010000111001101100110111100101001110111000101110111010111010010010";
+
+			Assert::AreEqual(ExpectedCode, EncodedString);
+		}
+
+		TEST_METHOD(HaffmanCode2)
+		{
+			string quote3 = "The Darksign is the sign of an accursed Undead";
+			cout << quote3 << ":" << endl;
+
+			Map<char, int>* symbolsMap3 = new Map<char, int>();
+
+			for (char character : quote3)
+			{
+				symbolsMap3->Add(character, 1);
+			}
+
+			Map<char, List<bool>*>* haffmanCode3 = EncodeByHaffman(symbolsMap3);
+
+			string EncodedString = "";
+			cout << "Encoded string: " << endl;
+			for (char character : quote3)
+			{
+				List<bool>* code = haffmanCode3->Find(character);
+				auto list_itr = code->create_iterator();
+				while (list_itr->has_next())
+				{
+					EncodedString += BoolToString(list_itr->next());
+				}
+			}
+
+			string ExpectedCode = "1101111111011000111010010110011111011101010011111100001100110100111101011110110001101010011111100001111001110110011011000011011001000101110000011101011001000011101010001000110010111000";
+
+			Assert::AreEqual(ExpectedCode, EncodedString);
 		}
 	};
 }

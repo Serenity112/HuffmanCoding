@@ -51,14 +51,14 @@ public:
 
 	~List()
 	{
-		Node* currNode = head;
-
-		while (currNode != nullptr)
+		auto list_itr = this->create_iterator();
+		while (list_itr->has_next())
 		{
-			currNode = currNode->next;
-			delete head;
-			head = currNode;
+			Node* temp = list_itr->current;
+			list_itr->next();
+			delete temp;
 		}
+		delete list_itr;
 	}
 
 	void push_back(T elem)
@@ -147,13 +147,11 @@ public:
 		return head == nullptr;
 	}
 
-	Iterator<T>* create_iterator()
-	{
-		return new ListIterator(this);
-	}
+	
 
 	class ListIterator : public Iterator<T>
 	{
+
 	public:
 		friend class List;
 
@@ -180,6 +178,12 @@ public:
 			return temp;
 		}
 	};
+
+	ListIterator* create_iterator()
+	{
+		ListIterator* iter = new ListIterator(this);
+		return iter;
+	}
 private:
 	void pop_only()
 	{

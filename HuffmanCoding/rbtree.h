@@ -27,7 +27,7 @@ private:
 	public:
 		friend class RBTree;
 		
-		friend class TreeIterator;
+		friend class RBTreeIterator;
 
 
 		Node(T1 key, T2 data) : Node()
@@ -43,7 +43,6 @@ private:
 			right = nullptr;
 			parent = nullptr;
 			key = nullptr;
-			//data = 0;
 			color = color::RED;
 		}
 
@@ -58,59 +57,11 @@ private:
 
 	Node* Nil;
 public:
-	T2 operator [](T1& key)
-	{
-		return FindData(key);
-	}
-
-	T2& operator [](T1 const key)
-	{
-		return *((Node*)&FindNode(key))->data;
-	}
-
 	RBTree()
 	{
 		Nil = new Node();
 		Nil->color = color::BLACK;
 		root = Nil;
-	}
-
-	~RBTree()
-	{
-		auto itr = create_iterator();
-
-		while (itr->has_next())
-		{
-			Node* next = itr->next();
-			delete next;
-		}
-		delete itr;
-	}
-
-	void printtree()
-	{
-		auto itr = create_iterator();
-
-		while (itr->has_next())
-		{
-			Node* next = itr->next();
-			cout << "Key: " << *next->key;
-			cout << " Data: " << next->data << endl;
-		}
-	}
-
-	void printtree(Node* node)
-	{
-		if (node == Nil)
-			cout << "Nil\n"; 
-		else
-		{
-			cout << *node->key << endl;
-			printtree(node->left);
-			printtree(node->right);
-		}
-
-
 	}
 
 	void LeftSwitch(Node* X)
@@ -588,18 +539,25 @@ public:
 	{
 		return node->data;
 	}
-		
-	Pair<T1, T2> GetPair(Node* node)
-	{
-		return makepair(*node->key, node->data);
-	}
 
-	Iterator<Node*>* create_iterator()
+	~RBTree()
 	{
-		return new TreeIterator(root, Nil);
-	}
+		auto itr = create_iterator();
 
-	class TreeIterator : public Iterator<Node*>
+		while (itr->has_next())
+		{
+			Node* temp = itr->current;
+			itr->next();
+
+			cout << itr->has_next() << endl;
+			delete temp;
+		}
+		delete itr;
+
+		delete Nil;
+	}
+	
+	class RBTreeIterator : public Iterator<Pair<T1, T2>>
 	{
 	public:
 		friend class RBTree;
@@ -607,40 +565,35 @@ public:
 		Stack<Node*>* stack;
 
 		Node* current;
-		Node* Nil;
 
-		TreeIterator(Node* root, Node* Nil)
+		RBTreeIterator(Node* root)
 		{
-			this->Nil = Nil;
 			current = root;
 			stack = new Stack<Node*>();
 		}
 
-		~TreeIterator()
+		~RBTreeIterator()
 		{
 			delete stack;
 		}
 
 		bool has_next()
 		{
-			return current != Nil;
+			return current != nullptr;
 		}
 
-		Node* next()
+		Pair<T1, T2> next()
 		{
-			if (!has_next())
-			{
-				throw out_of_range("No more elements");
-			}
-
 			Node* temp = current;
 
-			if (current->right != Nil)
+			Pair<T1, T2> pair = makepair(*temp->key, temp->data);
+
+			if (current->right->key != nullptr)
 			{
 				stack->push(current->right);
 			}
 
-			if (current->left != Nil)
+			if (current->left->key != nullptr)
 			{
 				current = current->left;
 			}
@@ -653,13 +606,20 @@ public:
 				}
 				else
 				{
-					current = Nil;
+					current = nullptr;
 				}
 			}
 
-			return temp;
+			return pair;
 		}
+			
 	};	
+
+	RBTreeIterator* create_iterator()
+	{
+		return new RBTreeIterator(root);
+	}
+
 };
 
 #endif

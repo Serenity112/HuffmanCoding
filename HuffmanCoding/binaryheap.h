@@ -197,13 +197,7 @@ public:
 
 	void insert(T data)
 	{
-		//data.symbols = "weeewee";
-
-		//newNode->data.symbols = "weeewee";
-
 		Node* newNode = new Node(data);
-
-		//newNode->data.symbols = "weewee";
 
 		if (root == nullptr)
 		{
@@ -352,10 +346,6 @@ public:
 		}
 	}
 
-	Iterator<Node*>* create_iterator()
-	{
-		return new HeapIterator(root);
-	}
 
 	class HeapIterator : public Iterator<Node*>
 	{
@@ -387,6 +377,8 @@ public:
 
 			Node* temp = current;
 
+
+
 			if (current->right != nullptr)
 			{
 				stack->push(current->right);
@@ -416,6 +408,11 @@ public:
 
 		Node* current;
 	};
+
+	HeapIterator* create_iterator()
+	{
+		return new HeapIterator(root);
+	}
 };
 
 #endif

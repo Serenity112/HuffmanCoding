@@ -15,20 +15,14 @@ class Map
 private:
 	RBTree<T1, T2>* rbtree;
 public:
-
-	T2 operator [](T1& key)
-	{
-		return rbtree[key];
-	}
-
-	///*T2& operator [](T1 const key)
-	//{
-	//	return rbtree[key];
-	//}*/
-
 	Map()
 	{
 		rbtree = new RBTree<T1, T2>();
+	}
+
+	~Map()
+	{
+		delete rbtree;
 	}
 
 	void Insert(T1 key, T2 data)
@@ -48,30 +42,13 @@ public:
 
 	T2 Find(T1 key)
 	{
-		return rbtree->GetData(key);
+		return rbtree->FindData(key);
 	}
 
 	void Clear()
 	{
 		delete rbtree;
 		rbtree = new RBTree<T1, T2>();
-	}
-
-
-	void Print()
-	{
-		auto itr = create_iterator();
-
-		while (itr->has_next())
-		{
-			Pair<T1, T2> newPair = itr->next();
-			cout << newPair.first << " " << newPair.second << endl;
-		}
-	}
-
-	Iterator<Pair<T1, T2>>* create_iterator()
-	{
-		return new MapIterator(rbtree);
 	}
 
 	class MapIterator : public Iterator<Pair<T1, T2>>
@@ -89,11 +66,12 @@ public:
 
 			while (treeiter->has_next())
 			{
-				Pair<T1, T2> newPair = rbtree->GetPair(treeiter->next());
-				pairs.push_back(newPair);
+				pairs.push_back(treeiter->next());
 			}
 
 			listiter = pairs.create_iterator();
+
+			delete treeiter;
 		}
 
 		~MapIterator()
@@ -108,10 +86,14 @@ public:
 
 		Pair<T1, T2> next()
 		{
-			Pair<T1, T2> currPair = listiter->next();
-			return currPair;
+			return listiter->next();
 		}
 	};	
+
+	MapIterator* create_iterator()
+	{
+		return new MapIterator(rbtree);
+	}
 };
 
 #endif
