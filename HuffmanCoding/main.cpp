@@ -6,13 +6,12 @@
 
 using namespace std;
 
-
 int main()
 {
 	string quote;
-	//quote = "it is test string";
+	quote = "it is test string";
 
-	getline(std::cin, quote);
+	//getline(std::cin, quote);
 	cout << quote << ":" << endl;
 
 	Map<char, int> symbolsMap;
@@ -49,4 +48,12 @@ int main()
 	cout << "Size before encode: " << sizeBeforeEncode << " bits" << endl;
 	cout << "Size after encode: " << sizeAferEncode << " bits" << endl;
 	cout << "Compression coefficient: " << (sizeAferEncode*1.0)/(sizeBeforeEncode*1.0) << endl;
+
+	// Deleting List<bool>* in Map<char, List<bool>*> haffmanCode
+	auto itr = haffmanCode.create_iterator();
+	while (itr->has_next())
+	{
+		auto pair = itr->next();
+		delete pair.second;
+	}
 }

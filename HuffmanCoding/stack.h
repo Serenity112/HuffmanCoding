@@ -13,8 +13,8 @@ private:
 	public:
 		Node(T node, Node* prev)
 		{
-			node = node;
-			prev = prev;
+			this->node = node;
+			this->prev = prev;
 		}
 
 		Node(T node) : Node(node, nullptr) {}
