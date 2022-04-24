@@ -15,6 +15,8 @@ public:
 	}
 
 	Pair() { }
+
+	~Pair() { }
 }; 
 
 template <typename T1, typename T2>

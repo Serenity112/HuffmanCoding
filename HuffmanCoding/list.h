@@ -33,11 +33,7 @@ public:
 
 	};
 
-	
-
 	Node* last;
-
-public:
 
 	int size = 0;
 
@@ -51,14 +47,11 @@ public:
 
 	~List()
 	{
-		auto list_itr = this->create_iterator();
-		while (list_itr->has_next())
+		while (!isEmpty())
 		{
-			Node* temp = list_itr->current;
-			list_itr->next();
-			delete temp;
+			//cout << "popping " << this->last << endl;
+			pop_back();
 		}
-		delete list_itr;
 	}
 
 	void push_back(T elem)

@@ -7,10 +7,14 @@
 #include "list.h"
 #include "string"
 
-
 using namespace std;
 
-HaffmanNode::HaffmanNode()
+inline string const BoolToString(bool b)
+{
+	return b ? "1" : "0";
+}
+
+HuffmanNode::HuffmanNode()
 {
 	this->symbols = "NaN";
 	this->count = -1;
@@ -21,84 +25,129 @@ HaffmanNode::HaffmanNode()
 	right = nullptr;
 }
 
-HaffmanNode::HaffmanNode(string symbols, int count) : HaffmanNode()
+HuffmanNode::HuffmanNode(string symbols, int count) : HuffmanNode()
 {
 	this->symbols = symbols;
 	this->count = count;
 }
 
-
-Map<char, List<bool>*>* EncodeByHaffman(Map<char, int>* symbolsMap)
+HuffmanTree::HuffmanTree()
 {
-	BinaryHeap<HaffmanNode>* heap = new BinaryHeap<HaffmanNode>();
+	root = nullptr;
+	leafsList = new List<HuffmanNode*>();
+}
 
-	auto itr = symbolsMap->create_iterator();
-	while (itr->has_next())
+void PrintCodes(Map<char, List<bool>*>& codesMap)
+{
+	auto codes_itr = codesMap.create_iterator();
+
+	while (codes_itr->has_next())
 	{
-		Pair<char, int> newPair = itr->next();
-		HaffmanNode newNode(string(1, newPair.first), newPair.second);
-		heap->insert(newNode);
+		Pair<char, List<bool>*> newPair = codes_itr->next();
+		cout << newPair.first << ": ";
+
+		auto list_itr = newPair.second->create_iterator();
+
+		while (list_itr->has_next())
+		{
+			cout << BoolToString(list_itr->next());
+		}
+
+		cout << endl;
 	}
+}
 
-	List<HaffmanNode*>* bufferList = new List<HaffmanNode*>();
+void PrintFreqency(Map<char, int>& symbolsMap)
+{
+	auto sym_itr = symbolsMap.create_iterator();
 
-	while (heap->height != 1)
+	while (sym_itr->has_next())
 	{
-		HaffmanNode n1 = heap->pop();
-		HaffmanNode n2 = heap->pop();
-	
-		HaffmanNode* minNode1 = &n1;
-		HaffmanNode * minNode2 = &n2;
+		Pair<char, int> newPair = sym_itr->next();
+		cout << newPair.first << ": " << newPair.second << endl;
+	}
+}
 
-		if (minNode1->left == nullptr)
+string bitSequanceToString(List<bool>& bitLine)
+{
+	string line;
+	auto list_itr = bitLine.create_iterator();
+	while (list_itr->has_next())
+		line += BoolToString(list_itr->next());
+	delete list_itr;
+	return line;
+}
+
+List<bool> EncodeByHuffman(string line, Map<char, List<bool>*>& haffmanCode)
+{
+	List<bool>* encodedLine = new List<bool>();
+
+	for (char character : line)
+	{
+		List<bool>* code = haffmanCode.Find(character);
+
+		auto list_itr = code->create_iterator();
+		while (list_itr->has_next())
 		{
-			HaffmanNode* realminNode1 = new HaffmanNode(minNode1->symbols, minNode1->count);
-			bufferList->push_front(realminNode1);
-			minNode1 = realminNode1;
+			encodedLine->push_back(list_itr->next());
 		}
-		else
+	}
+	return *encodedLine;
+}
+
+string DecodeByHaffman(List<bool>& encodedLine, HuffmanTree& tree)
+{
+	string decodedLine;
+	HuffmanNode* current = tree.root;
+
+	auto encodedLineBitIterator = encodedLine.create_iterator();
+	while (encodedLineBitIterator->has_next())
+	{
+		bool bit = encodedLineBitIterator->next();
+
+		if (bit) //bit == 1
 		{
-			minNode1 = minNode1->left->parent;
-		}
+			current = current->left;
 
-		if (minNode2->left == nullptr)
+			if (current->left == nullptr) // current is leaf
+			{
+				decodedLine += current->symbols;
+				current = tree.root;
+			}
+			else if (!(encodedLineBitIterator->has_next()))
+			{
+				throw out_of_range("Appropriate decoding sequance was not found");
+			}
+		}
+		else //bit == 0 
 		{
-			HaffmanNode* realminNode2 = new HaffmanNode(minNode2->symbols, minNode2->count);
-			bufferList->push_front(realminNode2);
-			minNode2 = realminNode2;
+			current = current->right;
+
+			if (current->left == nullptr) // current is leaf
+			{
+				decodedLine += current->symbols;
+				current = tree.root;
+			}
+			else if (!(encodedLineBitIterator->has_next()))
+			{
+				throw out_of_range("Appropriate decoding sequance was not found");
+			}
 		}
-		else
-		{
-			minNode2 = minNode2->left->parent;
-		}
+	}
+	return decodedLine;
+}
 
-		string combinedSymbols = minNode1->symbols + minNode2->symbols;
-		int combinedCount = minNode1->count + minNode2->count;
-
-		HaffmanNode* newNode = new HaffmanNode(combinedSymbols, combinedCount);
-
-		minNode1->code = 0;
-		minNode2->code = 1;
-
-		newNode->right = minNode1;
-		newNode->left = minNode2;
-		
-
-		minNode1->parent = newNode;
-		minNode2->parent = newNode;
-
-		heap->insert(*newNode);
-	}	
-
-	auto bufferItr = bufferList->create_iterator();
+Map<char, List<bool>*> CreateHuffmanCode(HuffmanTree& tree)
+{
+	auto bufferItr = tree.leafsList->create_iterator();
 
 	Map<char, List<bool>*>* haffcode = new Map<char, List<bool>*>();
 
 	while (bufferItr->has_next())
 	{
-		HaffmanNode* current = bufferItr->next();
+		HuffmanNode* current = bufferItr->next();
 
-		List<bool>* symbolCode = new List<bool>;
+		List<bool>* symbolCode = new List<bool>();
 
 		char currSymbol = (current->symbols)[0];
 
@@ -112,5 +161,75 @@ Map<char, List<bool>*>* EncodeByHaffman(Map<char, int>* symbolsMap)
 		haffcode->Insert(currSymbol, symbolCode);
 	}
 
-	return haffcode;
+	return *haffcode;
 }
+
+HuffmanTree buildHuffmanTree(Map<char, int>& symbolsMap)
+{
+	HuffmanTree* tree = new HuffmanTree();
+
+	BinaryHeap<HuffmanNode>* heap = new BinaryHeap<HuffmanNode>();
+
+	auto itr = symbolsMap.create_iterator();
+	while (itr->has_next())
+	{
+		Pair<char, int> newPair = itr->next();
+		HuffmanNode newNode(string(1, newPair.first), newPair.second);
+		heap->insert(newNode);
+	}
+
+	List<HuffmanNode*>* leafsList = new List<HuffmanNode*>();
+
+	while (heap->height != 1)
+	{
+		HuffmanNode n1 = heap->pop();
+		HuffmanNode n2 = heap->pop();
+
+		HuffmanNode* minNode1 = &n1;
+		HuffmanNode* minNode2 = &n2;
+
+		if (minNode1->left == nullptr)
+		{
+			HuffmanNode* realminNode1 = new HuffmanNode(minNode1->symbols, minNode1->count);
+			leafsList->push_front(realminNode1);
+			minNode1 = realminNode1;
+		}
+		else
+		{
+			minNode1 = minNode1->left->parent;
+		}
+
+		if (minNode2->left == nullptr)
+		{
+			HuffmanNode* realminNode2 = new HuffmanNode(minNode2->symbols, minNode2->count);
+			leafsList->push_front(realminNode2);
+			minNode2 = realminNode2;
+		}
+		else
+		{
+			minNode2 = minNode2->left->parent;
+		}
+
+		string combinedSymbols = minNode1->symbols + minNode2->symbols;
+		int combinedCount = minNode1->count + minNode2->count;
+
+		HuffmanNode* newNode = new HuffmanNode(combinedSymbols, combinedCount);
+		tree->root = newNode;
+		
+		minNode1->code = 0;
+		minNode2->code = 1;
+
+		newNode->right = minNode1;
+		newNode->left = minNode2;
+
+
+		minNode1->parent = newNode;
+		minNode2->parent = newNode;
+
+		heap->insert(*newNode);
+	}
+
+	delete heap;
+	tree->leafsList = leafsList;
+	return *tree;
+}	

@@ -13,21 +13,21 @@ private:
 	public:
 		Node(T node, Node* prev)
 		{
-			_node = node;
-			_prev = prev;
+			node = node;
+			prev = prev;
 		}
 
 		Node(T node) : Node(node, nullptr) {}
 
-		T _node;
-		Node* _prev;
+		T node;
+		Node* prev;
 	};
 
-	Node* _head;
+	Node* head;
 public:
 	Stack()
 	{
-		_head = nullptr;
+		head = nullptr;
 	}
 
 	~Stack()
@@ -46,21 +46,21 @@ public:
 		}
 		else
 		{
-			Node* temp = _head;
-			_head = _head->_prev;
+			Node* temp = head;
+			head = head->prev;
 			delete temp;
 		}
 	}
 
 	void push(T node)
 	{
-		Node* newNode = new Node(node, _head);
-		_head = newNode;
+		Node* newNode = new Node(node, head);
+		head = newNode;
 	}
 
 	bool empty()
 	{
-		return _head == nullptr;
+		return head == nullptr;
 	}
 
 	T top()
@@ -71,7 +71,7 @@ public:
 		}
 		else
 		{
-			return _head->_node;
+			return head->node;
 		}
 	}
 };

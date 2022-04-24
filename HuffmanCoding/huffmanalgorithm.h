@@ -3,24 +3,48 @@
 
 #include "map.h"
 
-class HaffmanNode
+
+
+class HuffmanNode
 {
 public:
 	string symbols;
 	int count;
 	bool code;
 
-	HaffmanNode* parent;
-	HaffmanNode* left;
-	HaffmanNode* right;
+	HuffmanNode* parent;
+	HuffmanNode* left;
+	HuffmanNode* right;
 
-	HaffmanNode(string, int);
+	HuffmanNode(string, int);
 
-	HaffmanNode();
+	HuffmanNode();
 };
 
+class HuffmanTree
+{
+public:
+	HuffmanNode* root;
 
+	List<HuffmanNode*>* leafsList;
 
-Map<char, List<bool>*>* EncodeByHaffman(Map<char, int>*);
+	HuffmanTree();
+};
+
+inline string const BoolToString(bool);
+
+void PrintFreqency(Map<char, int>&);
+
+void PrintCodes(Map<char, List<bool>*>&);
+
+string bitSequanceToString(List<bool>&);
+
+List<bool> EncodeByHuffman(string, Map<char, List<bool>*>&);
+
+string DecodeByHaffman(List<bool>&, HuffmanTree&);
+
+Map<char, List<bool>*> CreateHuffmanCode(HuffmanTree&);
+
+HuffmanTree buildHuffmanTree(Map<char, int>&);
 
 #endif

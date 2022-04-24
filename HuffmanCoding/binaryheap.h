@@ -7,17 +7,17 @@
 #include "stack.h"
 #include "huffmanalgorithm.h"
 
-bool operator < (const HaffmanNode& node1, const HaffmanNode& node2)
+bool operator < (const HuffmanNode& node1, const HuffmanNode& node2)
 {
 	return node1.count < node2.count;
 }
 
-bool operator > (const HaffmanNode& node1, const HaffmanNode& node2)
+bool operator > (const HuffmanNode& node1, const HuffmanNode& node2)
 {
 	return node1.count > node2.count;
 }
 
-bool operator == (const HaffmanNode& node1, const HaffmanNode& node2)
+bool operator == (const HuffmanNode& node1, const HuffmanNode& node2)
 {
 	return node1.count == node2.count;
 }

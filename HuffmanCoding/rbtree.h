@@ -30,7 +30,7 @@ private:
 		friend class RBTreeIterator;
 
 
-		Node(T1 key, T2 data) : Node()
+		Node(const T1& key, const T2& data) : Node()
 		{
 			this->key = new T1[1];
 			*this->key = key;
@@ -61,7 +61,7 @@ public:
 	{
 		Nil = new Node();
 		Nil->color = color::BLACK;
-		root = Nil;
+		root = nullptr;
 	}
 
 	void LeftSwitch(Node* X)
@@ -166,13 +166,11 @@ public:
 		}
 	}
 
-	void Add(T1 key, T2 data)
+	void Add(const T1& key, const T2& data)
 	{
-		if (root == Nil)
+		if (root == nullptr)
 		{
 			Node* newNode = new Node(key, data);
-
-
 
 			root = newNode;
 			root->color = color::BLACK;
@@ -226,9 +224,9 @@ public:
 
 
 
-	void Insert(T1 key, T2 data)
+	void Insert(const T1& key, const T2& data)
 	{
-		if (root == Nil)
+		if (root == nullptr)
 		{
 			Node* newNode = new Node(key, data);
 
@@ -338,7 +336,7 @@ public:
 		root->color = color::BLACK;
 	}
 
-	void Delete(T1 key)
+	void Delete(const T1& key)
 	{
 		Node* nodeToDelete = FindNode(key);
 
@@ -470,7 +468,7 @@ public:
 		X->color = color::BLACK;
 	}
 
-	Node* FindNode(T1 key)
+	Node* FindNode(const T1& key)
 	{
 		Node* currNode = root;
 
@@ -517,7 +515,7 @@ public:
 		return node;
 	}
 
-	T2 FindData(T1 key)
+	T2 FindData(const T1& key)
 	{
 		Node* node = FindNode(key);
 		if (node == Nil)
@@ -548,8 +546,6 @@ public:
 		{
 			Node* temp = itr->current;
 			itr->next();
-
-			cout << itr->has_next() << endl;
 			delete temp;
 		}
 		delete itr;
