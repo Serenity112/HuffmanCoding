@@ -32,7 +32,7 @@ private:
 
 		Node(const T1& key, const T2& data) : Node()
 		{
-			this->key = new T1();
+			this->key = new T1[1];
 			*this->key = key;
 			this->data = data;
 		}
@@ -49,7 +49,7 @@ private:
 		~Node()
 		{
 			if (key != nullptr)
-				delete key;
+				delete [] key;
 		}
 	};
 
